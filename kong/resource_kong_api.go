@@ -2,6 +2,7 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/kevholditch/gokong"
 )
@@ -12,6 +13,11 @@ func resourceKongApi() *schema.Resource {
 		Read:   resourceKongApiRead,
 		Delete: resourceKongApiDelete,
 		Update: resourceKongApiUpdate,
+		Exists: resourceKongApiExists,
+
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
@@ -110,7 +116,6 @@ func resourceKongApiCreate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceKongApiUpdate(d *schema.ResourceData, meta interface{}) error {
 	d.Partial(false)
-
 	apiRequest := createKongApiRequestFromResourceData(d)
 
 	_, err := meta.(*gokong.KongAdminClient).Apis().UpdateById(d.Id(), apiRequest)
@@ -156,6 +161,17 @@ func resourceKongApiDelete(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	return nil
+}
+
+func resourceKongApiExists(d *schema.ResourceData, meta interface{}) (bool, error) {
+	apiName := d.Get("name").(string)
+
+	api, err := meta.(*gokong.KongAdminClient).Apis().GetByName(apiName)
+	if err != nil {
+		return false, fmt.Errorf("could not find kong api: %v", err)
+	}
+
+	return api != nil && api.Name == apiName, nil
 }
 
 func createKongApiRequestFromResourceData(d *schema.ResourceData) *gokong.ApiRequest {
