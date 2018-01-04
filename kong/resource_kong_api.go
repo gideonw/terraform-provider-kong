@@ -103,10 +103,10 @@ func resourceKongApiCreate(d *schema.ResourceData, meta interface{}) error {
 
 	apiRequest := createKongApiRequestFromResourceData(d)
 
-	api, err := meta.(*gokong.KongAdminClient).Apis().Create(apiRequest)
+	api, err := meta.(*gokong.KongAdminClient).Apis().CreateOrUpdate(apiRequest)
 
 	if err != nil {
-		return fmt.Errorf("failed to create kong api: %v error: %v", apiRequest, err)
+		return fmt.Errorf("failed to create or update kong api: %v error: %v", apiRequest, err)
 	}
 
 	d.SetId(api.Id)

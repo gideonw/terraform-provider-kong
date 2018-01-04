@@ -12,7 +12,9 @@ type ApiClient struct {
 }
 
 type ApiRequest struct {
+	Id                     string   `json:"id,omitempty"`
 	Name                   string   `json:"name"`
+	CreatedAt              int      `json:"created_at"`
 	Hosts                  []string `json:"hosts,omitempty"`
 	Uris                   []string `json:"uris,omitempty"`
 	Methods                []string `json:"methods,omitempty"`
@@ -162,6 +164,32 @@ func (apiClient *ApiClient) UpdateById(id string, apiRequest *ApiRequest) (*Api,
 	err := json.Unmarshal([]byte(body), updatedApi)
 	if err != nil {
 		return nil, fmt.Errorf("could not parse api update response, error: %v", err)
+	}
+
+	if updatedApi.Id == "" {
+		return nil, fmt.Errorf("could not update certificate, error: %v", body)
+	}
+
+	return updatedApi, nil
+}
+
+func (apiClient *ApiClient) CreateOrUpdate(apiRequest *ApiRequest) (*Api, error) {
+
+	api, _ := apiClient.GetByName(apiRequest.Name)
+	if api != nil {
+		apiRequest.Id = api.Id
+		apiRequest.CreatedAt = api.CreatedAt
+	}
+
+	_, body, errs := gorequest.New().Put(apiClient.config.HostAddress + ApisPath).Send(apiRequest).End()
+	if errs != nil {
+		return nil, fmt.Errorf("could not update api, error: %v", errs)
+	}
+
+	updatedApi := &Api{}
+	err := json.Unmarshal([]byte(body), updatedApi)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse api update response, error: %v %s", err, body)
 	}
 
 	if updatedApi.Id == "" {

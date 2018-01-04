@@ -1060,7 +1060,6 @@ func (s *SuperAgent) getResponseBytes() (Response, []byte, []error) {
 			s.logger.Printf("CURL command line: %s", curl)
 		}
 	}
-
 	// Send request
 	resp, err = s.Client.Do(req)
 	if err != nil {
@@ -1104,10 +1103,14 @@ func (s *SuperAgent) MakeRequest() (*http.Request, error) {
 		if s.BounceToRawString {
 			contentJson = []byte(s.RawString)
 		} else if len(s.Data) != 0 {
+			log.Printf("%#v\n", s.Data)
+
 			contentJson, _ = json.Marshal(s.Data)
 		} else if len(s.SliceData) != 0 {
 			contentJson, _ = json.Marshal(s.SliceData)
 		}
+		log.Println(string(contentJson))
+
 		contentReader := bytes.NewReader(contentJson)
 		req, err = http.NewRequest(s.Method, s.Url, contentReader)
 		if err != nil {

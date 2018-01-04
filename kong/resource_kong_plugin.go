@@ -2,6 +2,7 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/kevholditch/gokong"
 )
@@ -12,6 +13,11 @@ func resourceKongPlugin() *schema.Resource {
 		Read:   resourceKongPluginRead,
 		Delete: resourceKongPluginDelete,
 		Update: resourceKongPluginUpdate,
+		Exists: resourceKongPluginExists,
+
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
@@ -43,7 +49,7 @@ func resourceKongPluginCreate(d *schema.ResourceData, meta interface{}) error {
 
 	pluginRequest := createKongPluginRequestFromResourceData(d)
 
-	plugin, err := meta.(*gokong.KongAdminClient).Plugins().Create(pluginRequest)
+	plugin, err := meta.(*gokong.KongAdminClient).Plugins().UpdateOrAdd(pluginRequest)
 
 	if err != nil {
 		return fmt.Errorf("failed to create kong plugin: %v error: %v", pluginRequest, err)
@@ -90,6 +96,27 @@ func resourceKongPluginDelete(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	return nil
+}
+
+func resourceKongPluginExists(d *schema.ResourceData, meta interface{}) (bool, error) {
+	pluginName := d.Get("name").(string)
+	apiID := d.Get("api_id").(string)
+
+	plugins, err := meta.(*gokong.KongAdminClient).Plugins().ListFiltered(&gokong.PluginFilter{
+		ApiId: apiID,
+		Name:  pluginName,
+	})
+	if err != nil {
+		return false, fmt.Errorf("could not find kong plugin: %v", err)
+	}
+
+	for _, v := range plugins.Results {
+		if v != nil && v.Name == pluginName {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 func createKongPluginRequestFromResourceData(d *schema.ResourceData) *gokong.PluginRequest {
