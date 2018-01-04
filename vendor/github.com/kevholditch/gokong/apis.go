@@ -14,7 +14,7 @@ type ApiClient struct {
 type ApiRequest struct {
 	Id                     string   `json:"id,omitempty"`
 	Name                   string   `json:"name"`
-	CreatedAt              int      `json:"created_at"`
+	CreatedAt              int      `json:"created_at,omitempty"`
 	Hosts                  []string `json:"hosts,omitempty"`
 	Uris                   []string `json:"uris,omitempty"`
 	Methods                []string `json:"methods,omitempty"`
