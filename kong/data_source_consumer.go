@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func dataSourceKongConsumer() *schema.Resource {
@@ -54,9 +55,9 @@ func dataSourceKongConsumerRead(d *schema.ResourceData, meta interface{}) error 
 		filterSet := v.(*schema.Set).List()
 		if len(filterSet) == 1 {
 			filterMap := filterSet[0].(map[string]interface{})
-			filter.Id = filterMap["id"].(string)
+			filter.ID = filterMap["id"].(string)
 			filter.Username = filterMap["username"].(string)
-			filter.CustomId = filterMap["custom_id"].(string)
+			filter.CustomID = filterMap["custom_id"].(string)
 		}
 	}
 
@@ -76,10 +77,10 @@ func dataSourceKongConsumerRead(d *schema.ResourceData, meta interface{}) error 
 
 	consumer := results.Results[0]
 
-	d.SetId(consumer.Id)
-	d.Set("id", consumer.Id)
+	d.SetId(consumer.ID)
+	d.Set("id", consumer.ID)
 	d.Set("username", consumer.Username)
-	d.Set("custom_id", consumer.CustomId)
+	d.Set("custom_id", consumer.CustomID)
 
 	return nil
 }

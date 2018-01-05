@@ -1,8 +1,9 @@
 package kong
 
 import (
-	"github.com/hashicorp/terraform/helper/resource"
 	"testing"
+
+	"github.com/hashicorp/terraform/helper/resource"
 )
 
 func TestAccDataSourceKongPlugin(t *testing.T) {
@@ -23,7 +24,7 @@ func TestAccDataSourceKongPlugin(t *testing.T) {
 
 const testPluginDataSourceConfig = `
 resource "kong_api" "my_api" {
-	name 	                 = "TestApi"
+	name 	                 = "TestAPI"
   	hosts                    = [ "example.com" ]
 	uris 	                 = [ "/example" ]
 	methods                  = [ "GET", "POST" ]

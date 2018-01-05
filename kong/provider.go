@@ -1,10 +1,11 @@
 package kong
 
 import (
+	"os"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
-	"os"
+	"github.com/gideonw/gokong"
 )
 
 func Provider() terraform.ResourceProvider {
@@ -19,16 +20,17 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"kong_api":         resourceKongApi(),
-			"kong_certificate": resourceKongCertificate(),
-			"kong_consumer":    resourceKongConsumer(),
-			"kong_plugin":      resourceKongPlugin(),
-			"kong_sni":         resourceKongSni(),
-			"kong_upstream":    resourceKongUpstream(),
+			"kong_api":                     resourceKongAPI(),
+			"kong_certificate":             resourceKongCertificate(),
+			"kong_consumer":                resourceKongConsumer(),
+			"kong_consumer_credential_jwt": resourceKongConsumerCredentialJWT(),
+			"kong_plugin":                  resourceKongPlugin(),
+			"kong_sni":                     resourceKongSni(),
+			"kong_upstream":                resourceKongUpstream(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{
-			"kong_api":         dataSourceKongApi(),
+			"kong_api":         dataSourceKongAPI(),
 			"kong_certificate": dataSourceKongCertificate(),
 			"kong_consumer":    dataSourceKongConsumer(),
 			"kong_plugin":      dataSourceKongPlugin(),

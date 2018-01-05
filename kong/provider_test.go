@@ -3,8 +3,8 @@ package kong
 import (
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
-	"github.com/kevholditch/gokong/containers"
+	"github.com/gideonw/gokong"
+	"github.com/gideonw/gokong/containers"
 	"log"
 	"os"
 	"testing"

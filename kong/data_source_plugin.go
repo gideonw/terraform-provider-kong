@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func dataSourceKongPlugin() *schema.Resource {
@@ -66,10 +67,10 @@ func dataSourceKongPluginRead(d *schema.ResourceData, meta interface{}) error {
 		filterSet := v.(*schema.Set).List()
 		if len(filterSet) == 1 {
 			filterMap := filterSet[0].(map[string]interface{})
-			filter.Id = filterMap["id"].(string)
+			filter.ID = filterMap["id"].(string)
 			filter.Name = filterMap["name"].(string)
-			filter.ApiId = filterMap["api_id"].(string)
-			filter.ConsumerId = filterMap["consumer_id"].(string)
+			filter.APIID = filterMap["api_id"].(string)
+			filter.ConsumerID = filterMap["consumer_id"].(string)
 		}
 	}
 
@@ -89,11 +90,11 @@ func dataSourceKongPluginRead(d *schema.ResourceData, meta interface{}) error {
 
 	plugin := results.Results[0]
 
-	d.SetId(plugin.Id)
-	d.Set("id", plugin.Id)
+	d.SetId(plugin.ID)
+	d.Set("id", plugin.ID)
 	d.Set("name", plugin.Name)
-	d.Set("api_id", plugin.ApiId)
-	d.Set("consumer_id", plugin.ConsumerId)
+	d.Set("api_id", plugin.APIID)
+	d.Set("consumer_id", plugin.ConsumerID)
 	d.Set("enabled", plugin.Enabled)
 
 	return nil

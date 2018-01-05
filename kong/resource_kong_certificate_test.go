@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
@@ -44,7 +44,7 @@ func testAccCheckKongCertificateDestroy(state *terraform.State) error {
 		return fmt.Errorf("expecting only 1 certificate resource found %v", len(certificates))
 	}
 
-	response, err := client.Certificates().GetById(certificates[0].Primary.ID)
+	response, err := client.Certificates().GetByID(certificates[0].Primary.ID)
 
 	if err != nil {
 		return fmt.Errorf("error calling get certificate by id: %v", err)
@@ -70,7 +70,7 @@ func testAccCheckKongCertificateExists(resourceKey string) resource.TestCheckFun
 			return fmt.Errorf("no ID is set")
 		}
 
-		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Certificates().GetById(rs.Primary.ID)
+		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Certificates().GetByID(rs.Primary.ID)
 
 		if err != nil {
 			return err

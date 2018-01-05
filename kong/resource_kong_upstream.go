@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func resourceKongUpstream() *schema.Resource {
@@ -44,14 +45,14 @@ func resourceKongUpstreamCreate(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("failed to create kong upstream: %v error: %v", upstreamRequest, err)
 	}
 
-	d.SetId(upstream.Id)
+	d.SetId(upstream.ID)
 
 	return resourceKongUpstreamRead(d, meta)
 }
 
 func resourceKongUpstreamRead(d *schema.ResourceData, meta interface{}) error {
 
-	upstream, err := meta.(*gokong.KongAdminClient).Upstreams().GetById(d.Id())
+	upstream, err := meta.(*gokong.KongAdminClient).Upstreams().GetByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not find kong upstream: %v", err)
@@ -65,7 +66,7 @@ func resourceKongUpstreamRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceKongUpstreamDelete(d *schema.ResourceData, meta interface{}) error {
 
-	err := meta.(*gokong.KongAdminClient).Upstreams().DeleteById(d.Id())
+	err := meta.(*gokong.KongAdminClient).Upstreams().DeleteByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not delete kong upstream: %v", err)

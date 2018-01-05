@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func resourceKongCertificate() *schema.Resource {
@@ -38,7 +39,7 @@ func resourceKongCertificateCreate(d *schema.ResourceData, meta interface{}) err
 		return fmt.Errorf("failed to create kong certificate: %v error: %v", certificateRequest, err)
 	}
 
-	d.SetId(certificate.Id)
+	d.SetId(certificate.ID)
 
 	return resourceKongCertificateRead(d, meta)
 }
@@ -48,7 +49,7 @@ func resourceKongCertificateUpdate(d *schema.ResourceData, meta interface{}) err
 
 	certificateRequest := createKongCertificateRequestFromResourceData(d)
 
-	_, err := meta.(*gokong.KongAdminClient).Certificates().UpdateById(d.Id(), certificateRequest)
+	_, err := meta.(*gokong.KongAdminClient).Certificates().UpdateByID(d.Id(), certificateRequest)
 
 	if err != nil {
 		return fmt.Errorf("error updating kong certificate: %s", err)
@@ -59,7 +60,7 @@ func resourceKongCertificateUpdate(d *schema.ResourceData, meta interface{}) err
 
 func resourceKongCertificateRead(d *schema.ResourceData, meta interface{}) error {
 
-	certificate, err := meta.(*gokong.KongAdminClient).Certificates().GetById(d.Id())
+	certificate, err := meta.(*gokong.KongAdminClient).Certificates().GetByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not find kong certificate: %v", err)
@@ -73,7 +74,7 @@ func resourceKongCertificateRead(d *schema.ResourceData, meta interface{}) error
 
 func resourceKongCertificateDelete(d *schema.ResourceData, meta interface{}) error {
 
-	err := meta.(*gokong.KongAdminClient).Certificates().DeleteById(d.Id())
+	err := meta.(*gokong.KongAdminClient).Certificates().DeleteByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not delete kong certificate: %v", err)

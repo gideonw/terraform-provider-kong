@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
@@ -44,7 +44,7 @@ func testAccCheckKongConsumerDestroy(state *terraform.State) error {
 		return fmt.Errorf("expecting only 1 consumer resource found %v", len(consumers))
 	}
 
-	response, err := client.Consumers().GetById(consumers[0].Primary.ID)
+	response, err := client.Consumers().GetByID(consumers[0].Primary.ID)
 
 	if err != nil {
 		return fmt.Errorf("error calling get consumer by id: %v", err)
@@ -72,7 +72,7 @@ func testAccCheckKongConsumerExists(resourceKey string) resource.TestCheckFunc {
 
 		client := testAccProvider.Meta().(*gokong.KongAdminClient)
 
-		api, err := client.Consumers().GetById(rs.Primary.ID)
+		api, err := client.Consumers().GetByID(rs.Primary.ID)
 
 		if err != nil {
 			return err

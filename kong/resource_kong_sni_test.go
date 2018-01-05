@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
@@ -18,7 +18,7 @@ func TestAccKongSni(t *testing.T) {
 				Config: testCreateSniConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongSniExists("kong_sni.sni"),
-					//testAccCheckForChildIdCorrect("kong_certificate.certificate1", "kong_sni.sni", "certificate_id"),
+					//testAccCheckForChildIDCorrect("kong_certificate.certificate1", "kong_sni.sni", "certificate_id"),
 					resource.TestCheckResourceAttr("kong_sni.sni", "name", "www.example.com"),
 				),
 			},
@@ -26,7 +26,7 @@ func TestAccKongSni(t *testing.T) {
 				Config: testUpdateSniConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongSniExists("kong_sni.sni"),
-					//testAccCheckForChildIdCorrect("kong_certificate.certificate2", "kong_sni.sni", "certificate_id"),
+					//testAccCheckForChildIDCorrect("kong_certificate.certificate2", "kong_sni.sni", "certificate_id"),
 					resource.TestCheckResourceAttr("kong_sni.sni", "name", "www.example.com"),
 				),
 			},

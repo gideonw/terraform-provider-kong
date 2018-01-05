@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
-func TestAccKongPluginForAllConsumersAndApis(t *testing.T) {
+func TestAccKongPluginForAllConsumersAndAPIs(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckKongPluginDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testCreatePluginForAllApisAndConsumersConfig,
+				Config: testCreatePluginForAllAPIsAndConsumersConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.response_rate_limiting"),
 					resource.TestCheckResourceAttr("kong_plugin.response_rate_limiting", "name", "response-ratelimiting"),
@@ -23,7 +23,7 @@ func TestAccKongPluginForAllConsumersAndApis(t *testing.T) {
 				),
 			},
 			{
-				Config: testUpdatePluginForAllApisAndConsumersConfig,
+				Config: testUpdatePluginForAllAPIsAndConsumersConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.response_rate_limiting"),
 					resource.TestCheckResourceAttr("kong_plugin.response_rate_limiting", "name", "response-ratelimiting"),
@@ -34,28 +34,28 @@ func TestAccKongPluginForAllConsumersAndApis(t *testing.T) {
 	})
 }
 
-func TestAccKongPluginForASpecificApi(t *testing.T) {
+func TestAccKongPluginForASpecificAPI(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckKongPluginDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testCreatePluginForASpecificApiConfig,
+				Config: testCreatePluginForASpecificAPIConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.basic_auth"),
-					testAccCheckKongApiExists("kong_api.api"),
-					testAccCheckForChildIdCorrect("kong_api.api", "kong_plugin.basic_auth", "api_id"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					testAccCheckForChildIDCorrect("kong_api.api", "kong_plugin.basic_auth", "api_id"),
 					resource.TestCheckResourceAttr("kong_plugin.basic_auth", "name", "basic-auth"),
 					resource.TestCheckResourceAttr("kong_plugin.basic_auth", "config.hide_credentials", "true"),
 				),
 			},
 			{
-				Config: testUpdatePluginForASpecificApiConfig,
+				Config: testUpdatePluginForASpecificAPIConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.basic_auth"),
-					testAccCheckKongApiExists("kong_api.api"),
-					testAccCheckForChildIdCorrect("kong_api.api", "kong_plugin.basic_auth", "api_id"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					testAccCheckForChildIDCorrect("kong_api.api", "kong_plugin.basic_auth", "api_id"),
 					resource.TestCheckResourceAttr("kong_plugin.basic_auth", "name", "basic-auth"),
 					resource.TestCheckResourceAttr("kong_plugin.basic_auth", "config.hide_credentials", "false"),
 				),
@@ -75,7 +75,7 @@ func TestAccKongPluginForASpecificConsumer(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.rate_limit"),
 					testAccCheckKongConsumerExists("kong_consumer.plugin_consumer"),
-					testAccCheckForChildIdCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
+					testAccCheckForChildIDCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "name", "response-ratelimiting"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "config.limits.sms.minute", "20"),
 				),
@@ -85,7 +85,7 @@ func TestAccKongPluginForASpecificConsumer(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.rate_limit"),
 					testAccCheckKongConsumerExists("kong_consumer.plugin_consumer"),
-					testAccCheckForChildIdCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
+					testAccCheckForChildIDCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "name", "response-ratelimiting"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "config.limits.sms.minute", "11"),
 				),
@@ -94,32 +94,32 @@ func TestAccKongPluginForASpecificConsumer(t *testing.T) {
 	})
 }
 
-func TestAccKongPluginForASpecificApiAndConsumer(t *testing.T) {
+func TestAccKongPluginForASpecificAPIAndConsumer(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckKongPluginDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testCreatePluginForASpecificApiAndConsumerConfig,
+				Config: testCreatePluginForASpecificAPIAndConsumerConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.rate_limit"),
 					testAccCheckKongConsumerExists("kong_consumer.plugin_consumer"),
-					testAccCheckKongApiExists("kong_api.api"),
-					testAccCheckForChildIdCorrect("kong_api.api", "kong_plugin.rate_limit", "api_id"),
-					testAccCheckForChildIdCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					testAccCheckForChildIDCorrect("kong_api.api", "kong_plugin.rate_limit", "api_id"),
+					testAccCheckForChildIDCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "name", "response-ratelimiting"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "config.limits.sms.minute", "77"),
 				),
 			},
 			{
-				Config: testUpdatePluginForASpecificApiAndConsumerConfig,
+				Config: testUpdatePluginForASpecificAPIAndConsumerConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckKongPluginExists("kong_plugin.rate_limit"),
 					testAccCheckKongConsumerExists("kong_consumer.plugin_consumer"),
-					testAccCheckKongApiExists("kong_api.api"),
-					testAccCheckForChildIdCorrect("kong_api.api", "kong_plugin.rate_limit", "api_id"),
-					testAccCheckForChildIdCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					testAccCheckForChildIDCorrect("kong_api.api", "kong_plugin.rate_limit", "api_id"),
+					testAccCheckForChildIDCorrect("kong_consumer.plugin_consumer", "kong_plugin.rate_limit", "consumer_id"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "name", "response-ratelimiting"),
 					resource.TestCheckResourceAttr("kong_plugin.rate_limit", "config.limits.sms.minute", "23"),
 				),
@@ -138,7 +138,7 @@ func testAccCheckKongPluginDestroy(state *terraform.State) error {
 		return fmt.Errorf("expecting only 1 plugin resource found %v", len(plugins))
 	}
 
-	response, err := client.Plugins().GetById(plugins[0].Primary.ID)
+	response, err := client.Plugins().GetByID(plugins[0].Primary.ID)
 
 	if err != nil {
 		return fmt.Errorf("error calling get plugin by id: %v", err)
@@ -151,7 +151,7 @@ func testAccCheckKongPluginDestroy(state *terraform.State) error {
 	return nil
 }
 
-func testAccCheckForChildIdCorrect(parentResource string, childResource string, childIdField string) resource.TestCheckFunc {
+func testAccCheckForChildIDCorrect(parentResource string, childResource string, childIDField string) resource.TestCheckFunc {
 
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[parentResource]
@@ -164,7 +164,7 @@ func testAccCheckForChildIdCorrect(parentResource string, childResource string, 
 			return fmt.Errorf("no ID is set")
 		}
 
-		parentId := rs.Primary.ID
+		parentID := rs.Primary.ID
 
 		rs, ok = s.RootModule().Resources[childResource]
 
@@ -172,14 +172,14 @@ func testAccCheckForChildIdCorrect(parentResource string, childResource string, 
 			return fmt.Errorf("not found: %s", parentResource)
 		}
 
-		childId, ok := rs.Primary.Attributes[childIdField]
+		childID, ok := rs.Primary.Attributes[childIDField]
 
 		if !ok {
-			return fmt.Errorf("child id field %s not set on %s", childIdField, childResource)
+			return fmt.Errorf("child id field %s not set on %s", childIDField, childResource)
 		}
 
-		if parentId != childId {
-			return fmt.Errorf("expected %s id of %s to equal %s id field %s of %s", parentResource, parentId, childResource, childIdField, childId)
+		if parentID != childID {
+			return fmt.Errorf("expected %s id of %s to equal %s id field %s of %s", parentResource, parentID, childResource, childIDField, childID)
 		}
 
 		return nil
@@ -199,7 +199,7 @@ func testAccCheckKongPluginExists(resourceKey string) resource.TestCheckFunc {
 			return fmt.Errorf("no ID is set")
 		}
 
-		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Plugins().GetById(rs.Primary.ID)
+		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Plugins().GetByID(rs.Primary.ID)
 
 		if err != nil {
 			return err
@@ -213,7 +213,7 @@ func testAccCheckKongPluginExists(resourceKey string) resource.TestCheckFunc {
 	}
 }
 
-const testCreatePluginForAllApisAndConsumersConfig = `
+const testCreatePluginForAllAPIsAndConsumersConfig = `
 resource "kong_plugin" "response_rate_limiting" {
 	name  = "response-ratelimiting"
 	config = {
@@ -221,7 +221,7 @@ resource "kong_plugin" "response_rate_limiting" {
 	}
 }
 `
-const testUpdatePluginForAllApisAndConsumersConfig = `
+const testUpdatePluginForAllAPIsAndConsumersConfig = `
 resource "kong_plugin" "response_rate_limiting" {
 	name  = "response-ratelimiting"
 	config = {
@@ -229,9 +229,9 @@ resource "kong_plugin" "response_rate_limiting" {
 	}
 }
 `
-const testCreatePluginForASpecificApiConfig = `
+const testCreatePluginForASpecificAPIConfig = `
 resource "kong_api" "api" {
-	name 	= "TestApi"
+	name 	= "TestAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]
@@ -255,9 +255,9 @@ resource "kong_plugin" "basic_auth" {
 }
 `
 
-const testUpdatePluginForASpecificApiConfig = `
+const testUpdatePluginForASpecificAPIConfig = `
 resource "kong_api" "api" {
-	name 	= "TestApi"
+	name 	= "TestAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]
@@ -311,9 +311,9 @@ resource "kong_plugin" "rate_limit" {
 }
 `
 
-const testCreatePluginForASpecificApiAndConsumerConfig = `
+const testCreatePluginForASpecificAPIAndConsumerConfig = `
 resource "kong_api" "api" {
-	name 	= "TestApi"
+	name 	= "TestAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]
@@ -343,9 +343,9 @@ resource "kong_plugin" "rate_limit" {
 }
 `
 
-const testUpdatePluginForASpecificApiAndConsumerConfig = `
+const testUpdatePluginForASpecificAPIAndConsumerConfig = `
 resource "kong_api" "api" {
-	name 	= "TestApi"
+	name 	= "TestAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]

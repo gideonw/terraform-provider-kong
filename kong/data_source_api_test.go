@@ -1,19 +1,20 @@
 package kong
 
 import (
-	"github.com/hashicorp/terraform/helper/resource"
 	"testing"
+
+	"github.com/hashicorp/terraform/helper/resource"
 )
 
-func TestAccDataSourceKongApi(t *testing.T) {
+func TestAccDataSourceKongAPI(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testApiDataSourceConfig,
+				Config: testAPIDataSourceConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("data.kong_api.api_data_source", "name", "TestDataSourceApi"),
+					resource.TestCheckResourceAttr("data.kong_api.api_data_source", "name", "TestDataSourceAPI"),
 					resource.TestCheckResourceAttr("data.kong_api.api_data_source", "hosts.0", "example.com"),
 					resource.TestCheckResourceAttr("data.kong_api.api_data_source", "uris.0", "/example"),
 					resource.TestCheckResourceAttr("data.kong_api.api_data_source", "methods.0", "GET"),
@@ -33,9 +34,9 @@ func TestAccDataSourceKongApi(t *testing.T) {
 	})
 }
 
-const testApiDataSourceConfig = `
+const testAPIDataSourceConfig = `
 resource "kong_api" "my_test_api" {
-	name 	= "TestDataSourceApi"
+	name 	= "TestDataSourceAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]
@@ -53,7 +54,7 @@ resource "kong_api" "my_test_api" {
 data "kong_api" "api_data_source" {
 	filter = {
 		id = "${kong_api.my_test_api.id}"
-		name = "TestDataSourceApi"
+		name = "TestDataSourceAPI"
 		upstream_url = "http://localhost:4140"
 	}
 }

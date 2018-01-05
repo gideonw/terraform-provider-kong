@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func dataSourceKongCertificate() *schema.Resource {
@@ -36,27 +37,27 @@ func dataSourceKongCertificate() *schema.Resource {
 
 func dataSourceKongCertificateRead(d *schema.ResourceData, meta interface{}) error {
 
-	var filterId string
+	var filterID string
 
 	if v, _ := d.GetOk("filter"); v != nil {
 		filterSet := v.(*schema.Set).List()
 		if len(filterSet) == 1 {
 			filterMap := filterSet[0].(map[string]interface{})
-			filterId = filterMap["id"].(string)
+			filterID = filterMap["id"].(string)
 		}
 	}
 
-	result, err := meta.(*gokong.KongAdminClient).Certificates().GetById(filterId)
+	result, err := meta.(*gokong.KongAdminClient).Certificates().GetByID(filterID)
 
 	if err != nil {
 		return fmt.Errorf("could not find certificate, error: %v", err)
 	}
 
 	if result == nil {
-		return fmt.Errorf("could not find certificate by id: %v", filterId)
+		return fmt.Errorf("could not find certificate by id: %v", filterID)
 	}
 
-	d.SetId(result.Id)
+	d.SetId(result.ID)
 	d.Set("certificate", result.Cert)
 	d.Set("private_key", result.Key)
 

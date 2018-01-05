@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
@@ -90,7 +90,7 @@ func testAccCheckKongUpstreamDestroy(state *terraform.State) error {
 		return fmt.Errorf("expecting only 1 upstream resource found %v", len(upstreams))
 	}
 
-	response, err := client.Upstreams().GetById(upstreams[0].Primary.ID)
+	response, err := client.Upstreams().GetByID(upstreams[0].Primary.ID)
 
 	if err != nil {
 		return fmt.Errorf("error calling get upstream by id: %v", err)
@@ -116,7 +116,7 @@ func testAccCheckKongUpstreamExists(resourceKey string) resource.TestCheckFunc {
 			return fmt.Errorf("no ID is set")
 		}
 
-		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Upstreams().GetById(rs.Primary.ID)
+		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Upstreams().GetByID(rs.Primary.ID)
 
 		if err != nil {
 			return err

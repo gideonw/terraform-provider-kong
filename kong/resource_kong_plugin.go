@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func resourceKongPlugin() *schema.Resource {
@@ -55,7 +55,7 @@ func resourceKongPluginCreate(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("failed to create kong plugin: %v error: %v", pluginRequest, err)
 	}
 
-	d.SetId(plugin.Id)
+	d.SetId(plugin.ID)
 
 	return resourceKongPluginRead(d, meta)
 }
@@ -65,7 +65,7 @@ func resourceKongPluginUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	pluginRequest := createKongPluginRequestFromResourceData(d)
 
-	_, err := meta.(*gokong.KongAdminClient).Plugins().UpdateById(d.Id(), pluginRequest)
+	_, err := meta.(*gokong.KongAdminClient).Plugins().UpdateByID(d.Id(), pluginRequest)
 
 	if err != nil {
 		return fmt.Errorf("error updating kong plugin: %s", err)
@@ -76,7 +76,7 @@ func resourceKongPluginUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceKongPluginRead(d *schema.ResourceData, meta interface{}) error {
 
-	plugin, err := meta.(*gokong.KongAdminClient).Plugins().GetById(d.Id())
+	plugin, err := meta.(*gokong.KongAdminClient).Plugins().GetByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not find kong plugin: %v", err)
@@ -89,7 +89,7 @@ func resourceKongPluginRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceKongPluginDelete(d *schema.ResourceData, meta interface{}) error {
 
-	err := meta.(*gokong.KongAdminClient).Plugins().DeleteById(d.Id())
+	err := meta.(*gokong.KongAdminClient).Plugins().DeleteByID(d.Id())
 
 	if err != nil {
 		return fmt.Errorf("could not delete kong plugin: %v", err)
@@ -103,7 +103,7 @@ func resourceKongPluginExists(d *schema.ResourceData, meta interface{}) (bool, e
 	apiID := d.Get("api_id").(string)
 
 	plugins, err := meta.(*gokong.KongAdminClient).Plugins().ListFiltered(&gokong.PluginFilter{
-		ApiId: apiID,
+		APIID: apiID,
 		Name:  pluginName,
 	})
 	if err != nil {
@@ -124,8 +124,8 @@ func createKongPluginRequestFromResourceData(d *schema.ResourceData) *gokong.Plu
 	pluginRequest := &gokong.PluginRequest{}
 
 	pluginRequest.Name = readStringFromResource(d, "name")
-	pluginRequest.ApiId = readStringFromResource(d, "api_id")
-	pluginRequest.ConsumerId = readStringFromResource(d, "consumer_id")
+	pluginRequest.APIID = readStringFromResource(d, "api_id")
+	pluginRequest.ConsumerID = readStringFromResource(d, "consumer_id")
 	pluginRequest.Config = readMapFromResource(d, "config")
 
 	return pluginRequest

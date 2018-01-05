@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func resourceKongSni() *schema.Resource {
@@ -51,7 +52,7 @@ func resourceKongSniRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	d.Set("name", sni.Name)
-	d.Set("certificate_id", sni.SslCertificateId)
+	d.Set("certificate_id", sni.SslCertificateID)
 
 	return nil
 }
@@ -72,7 +73,7 @@ func createKongSniRequestFromResourceData(d *schema.ResourceData) *gokong.SnisRe
 	sniRequest := &gokong.SnisRequest{}
 
 	sniRequest.Name = readStringFromResource(d, "name")
-	sniRequest.SslCertificateId = readStringFromResource(d, "certificate_id")
+	sniRequest.SslCertificateID = readStringFromResource(d, "certificate_id")
 
 	return sniRequest
 }

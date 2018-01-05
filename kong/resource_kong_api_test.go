@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 	"testing"
 )
 
-func TestAccKongApi(t *testing.T) {
+func TestAccKongAPI(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckKongApiDestroy,
+		CheckDestroy: testAccCheckKongAPIDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testCreateApiConfig,
+				Config: testCreateAPIConfig,
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckKongApiExists("kong_api.api"),
-					resource.TestCheckResourceAttr("kong_api.api", "name", "TestApi"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					resource.TestCheckResourceAttr("kong_api.api", "name", "TestAPI"),
 					resource.TestCheckResourceAttr("kong_api.api", "hosts.0", "example.com"),
 					resource.TestCheckResourceAttr("kong_api.api", "uris.0", "/example"),
 					resource.TestCheckResourceAttr("kong_api.api", "methods.0", "GET"),
@@ -34,10 +34,10 @@ func TestAccKongApi(t *testing.T) {
 				),
 			},
 			{
-				Config: testUpdateApiConfig,
+				Config: testUpdateAPIConfig,
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckKongApiExists("kong_api.api"),
-					resource.TestCheckResourceAttr("kong_api.api", "name", "MyApi"),
+					testAccCheckKongAPIExists("kong_api.api"),
+					resource.TestCheckResourceAttr("kong_api.api", "name", "MyAPI"),
 					resource.TestCheckResourceAttr("kong_api.api", "hosts.0", "different.com"),
 					resource.TestCheckResourceAttr("kong_api.api", "uris.0", "/somedomain"),
 					resource.TestCheckResourceAttr("kong_api.api", "methods.0", "PUT"),
@@ -57,7 +57,7 @@ func TestAccKongApi(t *testing.T) {
 	})
 }
 
-func testAccCheckKongApiDestroy(state *terraform.State) error {
+func testAccCheckKongAPIDestroy(state *terraform.State) error {
 
 	client := testAccProvider.Meta().(*gokong.KongAdminClient)
 
@@ -67,7 +67,7 @@ func testAccCheckKongApiDestroy(state *terraform.State) error {
 		return fmt.Errorf("expecting only 1 api resource found %v", len(apis))
 	}
 
-	response, err := client.Apis().GetById(apis[0].Primary.ID)
+	response, err := client.APIs().GetByID(apis[0].Primary.ID)
 
 	if err != nil {
 		return fmt.Errorf("error calling get api by id: %v", err)
@@ -80,7 +80,7 @@ func testAccCheckKongApiDestroy(state *terraform.State) error {
 	return nil
 }
 
-func testAccCheckKongApiExists(resourceKey string) resource.TestCheckFunc {
+func testAccCheckKongAPIExists(resourceKey string) resource.TestCheckFunc {
 
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[resourceKey]
@@ -93,7 +93,7 @@ func testAccCheckKongApiExists(resourceKey string) resource.TestCheckFunc {
 			return fmt.Errorf("no ID is set")
 		}
 
-		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).Apis().GetById(rs.Primary.ID)
+		api, err := testAccProvider.Meta().(*gokong.KongAdminClient).APIs().GetByID(rs.Primary.ID)
 
 		if err != nil {
 			return err
@@ -107,9 +107,9 @@ func testAccCheckKongApiExists(resourceKey string) resource.TestCheckFunc {
 	}
 }
 
-const testCreateApiConfig = `
+const testCreateAPIConfig = `
 resource "kong_api" "api" {
-	name 	= "TestApi"
+	name 	= "TestAPI"
   	hosts   = [ "example.com" ]
 	uris 	= [ "/example" ]
 	methods = [ "GET", "POST" ]
@@ -124,9 +124,9 @@ resource "kong_api" "api" {
 	http_if_terminated = false
 }
 `
-const testUpdateApiConfig = `
+const testUpdateAPIConfig = `
 resource "kong_api" "api" {
-	name 	= "MyApi"
+	name 	= "MyAPI"
   	hosts   = [ "different.com" ]
 	uris 	= [ "/somedomain" ]
 	methods = [ "PUT", "PATCH" ]

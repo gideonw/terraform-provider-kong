@@ -2,8 +2,9 @@ package kong
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/kevholditch/gokong"
+	"github.com/gideonw/gokong"
 )
 
 func dataSourceKongUpstream() *schema.Resource {
@@ -56,7 +57,7 @@ func dataSourceKongUpstreamRead(d *schema.ResourceData, meta interface{}) error 
 		filterSet := v.(*schema.Set).List()
 		if len(filterSet) == 1 {
 			filterMap := filterSet[0].(map[string]interface{})
-			filter.Id = filterMap["id"].(string)
+			filter.ID = filterMap["id"].(string)
 			filter.Name = filterMap["name"].(string)
 		}
 	}
@@ -77,8 +78,8 @@ func dataSourceKongUpstreamRead(d *schema.ResourceData, meta interface{}) error 
 
 	upstream := results.Results[0]
 
-	d.SetId(upstream.Id)
-	d.Set("id", upstream.Id)
+	d.SetId(upstream.ID)
+	d.Set("id", upstream.ID)
 	d.Set("name", upstream.Name)
 	d.Set("slots", upstream.Slots)
 	d.Set("order_list", upstream.OrderList)

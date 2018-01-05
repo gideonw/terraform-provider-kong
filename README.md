@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kevholditch/terraform-provider-kong.svg?branch=master)](https://travis-ci.org/kevholditch/terraform-provider-kong)
+[![Build Status](https://travis-ci.org/gideonw/terraform-provider-kong.svg?branch=master)](https://travis-ci.org/gideonw/terraform-provider-kong)
 
 Terraform Provider Kong
 =======================
@@ -25,10 +25,10 @@ you do not provide a provider block as above.
 
 # Resources
 
-## Apis
+## APIs
 ```hcl
 resource "kong_api" "api" {
-    name 	             = "TestApi"
+    name 	             = "TestAPI"
     hosts                    = [ "example.com" ]
     uris 	             = [ "/example" ]
     methods                  = [ "GET", "POST" ]
@@ -43,7 +43,7 @@ resource "kong_api" "api" {
     http_if_terminated       = false
 }
 ```
-The api resource maps directly onto the json for the API endpoint in Kong.  For more information on the parameters [see the Kong Api create documentation](https://getkong.org/docs/0.11.x/admin-api/#api-object).
+The api resource maps directly onto the json for the API endpoint in Kong.  For more information on the parameters [see the Kong API create documentation](https://getkong.org/docs/0.11.x/admin-api/#api-object).
 
 ## Plugins
 ```hcl
@@ -55,13 +55,13 @@ resource "kong_plugin" "response_rate_limiting" {
 }
 ```
 
-The plugin resource maps directly onto the json for the API endpoint in Kong.  For more information on the parameters [see the Kong Api create documentation](https://getkong.org/docs/0.11.x/admin-api/#plugin-object).
+The plugin resource maps directly onto the json for the API endpoint in Kong.  For more information on the parameters [see the Kong API create documentation](https://getkong.org/docs/0.11.x/admin-api/#plugin-object).
 
 Here is a more complex example for creating a plugin for a consumer and an API:
 
 ```hcl
 resource "kong_api" "api" {
-    name 	             = "TestApi"
+    name 	             = "TestAPI"
     hosts                    = [ "example.com" ]
     uris 	             = [ "/example" ]
     methods                  = [ "GET", "POST" ]
@@ -150,7 +150,7 @@ To look up an existing api you can do so by using a filter:
 data "kong_api" "api_data_source" {
 	filter = {
 		id = "de539d26-97d2-4d5b-aaf9-628e51087d9c"
-		name = "TestDataSourceApi"
+		name = "TestDataSourceAPI"
 		upstream_url = "http://localhost:4140"
 	}
 }

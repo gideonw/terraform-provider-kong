@@ -1,0 +1,9 @@
+package: github.com/gideonw/terraform-provider-kong
+import:
+- package: github.com/hashicorp/terraform
+  version: ~0.11.1
+  subpackages:
+  - helper/schema
+  - plugin
+  - terraform
+- package: github.com/gideonw/gokong
