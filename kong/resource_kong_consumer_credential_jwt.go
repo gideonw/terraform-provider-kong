@@ -3,8 +3,8 @@ package kong
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/gideonw/gokong"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 func resourceKongConsumerCredentialJWT() *schema.Resource {
@@ -23,6 +23,7 @@ func resourceKongConsumerCredentialJWT() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
+				Computed: true,
 			},
 			"algorithm": &schema.Schema{
 				Type:     schema.TypeString,
@@ -38,6 +39,7 @@ func resourceKongConsumerCredentialJWT() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
+				Computed: true,
 			},
 		},
 	}

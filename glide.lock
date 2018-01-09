@@ -1,5 +1,5 @@
 hash: bb06f5f9fb737829121b99760ec98e58b15e081095c1373412541b122342a38a
-updated: 2018-01-05T16:13:14.810352183-08:00
+updated: 2018-01-08T16:30:28.719902698-08:00
 imports:
 - name: github.com/agext/levenshtein
   version: 5f10fee965225ac1eecdc234c09daf5cd9e7f7b6
@@ -64,7 +64,7 @@ imports:
   subpackages:
   - spew
 - name: github.com/docker/docker
-  version: 39faf2a3a83c4abad8ed8030a9b942bbb2978359
+  version: b4c7017f8d95ab42b1f9aa40260966df2c121cd5
   subpackages:
   - api/types
   - api/types/blkiodev
@@ -100,7 +100,7 @@ imports:
 - name: github.com/fsouza/go-dockerclient
   version: 413e380d74dfeddac90c0b89c598a1c7b19f5c54
 - name: github.com/gideonw/gokong
-  version: e5e60980958fd0087e4708d5c6280680a432e7ff
+  version: 872da91f465fe839df0433b0865828315b2f8b04
   subpackages:
   - containers
 - name: github.com/go-ini/ini
@@ -242,7 +242,7 @@ imports:
 - name: github.com/pkg/errors
   version: e881fd58d78e04cf6d0de1217f8707c8cc2249bc
 - name: github.com/posener/complete
-  version: 6bee943216c8cea4cc983c8596346d8945279a1f
+  version: 57878c9c0341001dd50e6ab0052c61cf9a79ad7f
   subpackages:
   - cmd
   - cmd/install
@@ -258,7 +258,7 @@ imports:
   - internal/xlog
   - lzma
 - name: github.com/zclconf/go-cty
-  version: 48ce95f3a00f37ac934ff90a62e377146f9428e1
+  version: 709e4033eeb037dc543dbc2048065dfb814ce316
   subpackages:
   - cty
   - cty/convert

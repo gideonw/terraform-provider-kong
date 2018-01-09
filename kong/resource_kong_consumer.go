@@ -3,8 +3,8 @@ package kong
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/gideonw/gokong"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 func resourceKongConsumer() *schema.Resource {
@@ -33,7 +33,7 @@ func resourceKongConsumerCreate(d *schema.ResourceData, meta interface{}) error 
 
 	consumerRequest := createKongConsumerRequestFromResourceData(d)
 
-	consumer, err := meta.(*gokong.KongAdminClient).Consumers().Create(consumerRequest)
+	consumer, err := meta.(*gokong.KongAdminClient).Consumers().CreateOrUpdate(consumerRequest)
 
 	if err != nil {
 		return fmt.Errorf("failed to create kong consumer: %v error: %v", consumerRequest, err)
